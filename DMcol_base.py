@@ -2,31 +2,35 @@
 class N:
     def __init__( self, digit ):
         self.digits = []
-        if digit is list or digit is tuple:
+        if isinstance( digit, ( list, tuple ) ):
             try:
                 self.digits = [ int( i ) for i in digit ]
             except:
                 raise RuntimeError( "Digit cannot be presented as integer > 0." )
-        elif digit is int:
+        elif isinstance( digit, int ):
             try:
                 self.digits = [ int( i ) for i in str( digit ) ]
             except:
                 raise RuntimeError( "Digit cannot be presented as integer > 0." )
+        #print( self.digits )
 
     def __str__( self ):
         return str( ''.join( str( self.digits ) ) )
 
 class Z( N ):
     def __init__( self, digit ):
+        digit = str( digit ).replace( '[', '' ).replace( ']', '' ).replace( ' ', '' ).replace( ',', '' )
         try:
-            self.sign = True if ( digit[ 0 ] == '-' or digit[ 0 ] == '-1' ) else False
+            self.sign = False
+            if ( digit[ 0 ] == '-' ):
+                self.sign = True
+                digit = digit[ 1 : ]
             self.digits = [ int( i ) for i in digit ]
         except:
             raise RuntimeError( "Digit cannot be presented as integer." )
 
     def __str__( self ):
-        out = ""
-        if self.sign: out = "-"
+        out = "" if not self.sign else "-" 
         out += str( ''.join( str( self.digits ) ) )
         return out
 
@@ -36,7 +40,7 @@ class Q:
             self.num = num      # Числитель.
             self.denum = denum  # Знаменатель.
         else:
-            raise RuntimeError( "Num is not a Z or denum is not a N." )
+            raise RuntimeError( "Num is not a Z-class or denum is not a N-class." )
 
     def __str__( self ):
         print( self.num, '/', self.denum, sep = '' )
@@ -49,7 +53,8 @@ class Q:
             if not isinstance( coeflist[ i ], ( N, Z, Q ) ):
                 raise RuntimeError( "Coefficient[ " + str( i ) + " ] == '" + str( coeflist[ i ] ) + "': num is not a Z-class or denum is not a N-class." )
             else:
-                self.coef.append( coeflist[ i ] ) # Список коэффициентов, начиная со старшего.
+                self.coef.append( coeflist[ i ] ) # Список коэффицентов, начиная со старшего.
+            #self.coef = coeflist # Список коэффицентов, начиная со старшего.
 
     def __str__( self ):
         coef, out = self.coef, ""
@@ -84,3 +89,5 @@ print( N( [ 1, 3 ] ) )
 q1 = Q( Z( [ 2 ] ), N( 1 ) )
 
 print("Hello world!")
+=======
+q1 = Q( Z( -24 ), N( 142 ) )
