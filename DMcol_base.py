@@ -15,7 +15,8 @@ class N:
         #print( self.digits )
 
     def __str__( self ):
-        return str( ''.join( str( self.digits ) ) )
+		return str( ''.join( map( str, self.digits ) ) )
+
 
 class Z( N ):
     def __init__( self, digit ):
@@ -33,6 +34,7 @@ class Z( N ):
         out = "" if not self.sign else "-" 
         out += str( ''.join( str( self.digits ) ) )
         return out
+
 
 class Q:
     def __init__( self, num, denum ):
