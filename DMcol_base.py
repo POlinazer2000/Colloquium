@@ -82,3 +82,5 @@ class Q:
 
 print( N( [ 1, 3 ] ) )
 q1 = Q( Z( [ 2 ] ), N( 1 ) )
+
+print("Hello world!")
