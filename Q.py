@@ -21,6 +21,6 @@ class Q():
         if not nzer_n_b( self.denum ) :
             raise ZeroDivisionError("Divided by zero")
     def __str__(self):
-        res = str(self.num) + ( str(self.denum) != '1' and "\{}".format(self.denum) or "" ) #если знаменатель == 1, не пишется
+        res = str(self.num) + ( str(self.denum) != '1' and "/{}".format(self.denum) or "" ) #если знаменатель == 1, не пишется
         #res = "{}/{}".format(self.num, self.denum)
         return res
