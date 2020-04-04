@@ -1,5 +1,5 @@
 
-class Z(N):
+class Z():
     def __init__(self, digit):
         digit = str(int(str(digit).replace('[', '').replace(']', '').replace(' ', '').replace(',', '')))
         try:
