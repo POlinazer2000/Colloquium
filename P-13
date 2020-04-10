@@ -1,0 +1,6 @@
+def nmr_P(self):
+    self.poly0 = dervtive_P(poly)
+    while(deg_P(self.poly0) > 0):
+        self.poly0 = GCF_PP_P(self.poly, self.poly0)
+        self.poly = div_P_P(self.poly, self.poly0)
+        self.poly0 = dervtive_P(self.poly)
