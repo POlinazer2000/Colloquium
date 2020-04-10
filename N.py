@@ -54,7 +54,7 @@ class N:
                     out[ i - 1 ] = out[ i ] // 10
                 out[ i ] %= 10
 
-        return int( str(''.join(map(str, out))) )
+        return N( int( str(''.join(map(str, out))) ) )
 
 
 
