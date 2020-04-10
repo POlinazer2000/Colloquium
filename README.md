@@ -8,7 +8,7 @@
 
 
 ## Список классов и действий с ними:
-<class>():
+\<class\>():
 	var1; var2; ...
 * Индекс; Кодовое описание; Предполагаемые действия;
 * Имя автора.
@@ -27,11 +27,11 @@ N():
 * Михаил, Ярослав
 * N5	sub_N_N		overload -
 * Михаил
-* N6	mul_N_digit	overload *
+* N6	mul_N_digit	overload \*
 * Дмитрий
-* N7	mul_N_10^k	overload *, **
+* N7	mul_N_10^k	overload \*, \*\*
 * Дмитрий
-* N8	mul_N_N		overload *
+* N8	mul_N_N		overload \*
 * Дмитрий
 * N9	(== N5 + N6)
 * Дмитрий
@@ -46,6 +46,7 @@ N():
 * N14	LCM_N		N = LCM( N1, N2, ... )
 * Владимир
 
+
 Z():
 	bool sign;
 	list digits[] (int);
@@ -54,7 +55,7 @@ Z():
 * Екатерина
 * Z2	comp_Z_0	overload <, >, ==, >=, <=, !=
 * Екатерина
-* Z3	mul_Z_-1	overload *
+* Z3	mul_Z_-1	overload \*
 * Екатерина
 * Z4	trans_N->Z	Z = N.toZ()
 * Екатерина
@@ -64,7 +65,7 @@ Z():
 * Яна
 * Z7	sub_Z_Z		overload -, use N::(+), N::(-) with sign check.
 * Яна
-* Z8	mul_Z_Z		overload *, use N::(*) with sign check.
+* Z8	mul_Z_Z		overload \*, use N::(\*) with sign check.
 * Яна
 * Z9	div_Z_Z		overload //, use N::(//)
 * Яна
@@ -88,9 +89,9 @@ Q():
 * Максим
 * Q6	sub_Q_Q		overload -, use Z::(-)
 * Максим
-* Q7	mul_Q_Q		overload *, use Z::(*)
+* Q7	mul_Q_Q		overload \*, use Z::(\*)
 * Максим
-* Q8	div_Q_Q		overload /, use Z::(*)
+* Q8	div_Q_Q		overload /, use Z::(\*)
 * Максим
 
 
@@ -98,20 +99,20 @@ P():
 	list coef[] (Q);
 
 * P1	add_P_P		overload +
-* -
+* --
 * P2	sub_P_P		overload -
-* -
-* P3	mul_P_Q		overload *
-* -
-* P4	mul_P_x^k	overload *
-* -
+* --
+* P3	mul_P_Q		overload \*
+* --
+* P4	mul_P_x^k	overload \*
+* --
 * P5	leadcoef_P	Q = P.leadcoef()
-* -
+* --
 * P6	deg_P		N = P.deg()
 * -
 * P7	factor_P	?
 * Илья
-* P8	mul_P_P		overload *
+* P8	mul_P_P		overload \*
 * Илья
 * P9	div_P_P		overload //
 * Илья
@@ -121,4 +122,4 @@ P():
 * P12	dervtive_P	P = P.derivative()
 * Никита
 * P13	nmr_P		P = P.nmr()
-* -
+* --
