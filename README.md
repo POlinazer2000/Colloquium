@@ -109,7 +109,7 @@ P():
 * P5	leadcoef_P	Q = P.leadcoef()
 * --
 * P6	deg_P		N = P.deg()
-* -
+* --
 * P7	factor_P	?
 * Илья
 * P8	mul_P_P		overload \*
