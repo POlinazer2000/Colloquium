@@ -24,7 +24,7 @@ N():
 * N3	inc_N		overload +
 * Михаил
 * N4	add_N_N		overload +
-* Михаил, Ярослав
+* Михаил, Ярослав (+)
 * N5	sub_N_N		overload -
 * Михаил
 * N6	mul_N_digit	overload \*
@@ -54,7 +54,7 @@ Z():
 * Z1	abs_Z		overload abs()
 * Екатерина
 * Z2	comp_Z_0	overload <, >, ==, >=, <=, !=
-* Екатерина
+* Екатерина, Ярослав (-?)
 * Z3	mul_Z_-1	overload \*
 * Екатерина
 * Z4	trans_N->Z	Z = N.toZ()
@@ -117,9 +117,10 @@ P():
 * P9	div_P_P		overload //
 * Илья
 * P10	mod_P_P		overload %
+* Полина (+-)
 * P11	GCF_P		? = GCF( P1, P2, ... )
-* Никита
+* Никита (+?)
 * P12	dervtive_P	P = P.derivative()
-* Никита
+* Никита (+?)
 * P13	nmr_P		P = P.nmr()
-* --
+* Полина (+-)
