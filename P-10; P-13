@@ -1,0 +1,6 @@
+def mod_P_P( poly1, poly2):
+    if(deg_P(poly1) < deg_P(poly2)) : poly1, poly2 = poly2, poly1
+    y = div_P_P(poly1, poly2)
+    poly2 = mul_P_P(poly2, y)
+    poly1 = sub_P_P(poly1, poly2)
+    return poly1
