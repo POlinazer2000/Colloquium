@@ -28,10 +28,16 @@ class N:
     def __len__( self ):
         return len( self.digits )
 
+    # Проверка на возможность перевести запрос на более высокий уровень.
+    def tryReverseOp( self, other, operator ):
+        if ( type( self ) != type( other ) ):
+            return eval( str( other ) + operator + str( self ) )
 
 
     # Переопределение сложения.
     def __add__( self, other ):
+        self.tryReverseOp( other, "+" )
+
         if isinstance(other, int):
             other = N( other )
         elif not isinstance(other, N):
