@@ -11,14 +11,10 @@ def tryReverseOp(a, b, op):
               }
 
     if crutch[type(a)] < crutch[type(b)]:
-        eval(type(b)(a) + op + b)
+        return eval(type(b)(a) + op + b)
     else:
-        eval(a + op + type(a)(b))
+        return eval(a + op + type(a)(b))
 
 
-#poly = polynom( [ N([0]), N([3]), N([0]), Z([-1]) ] )
-#print( "f(x) =", poly )
-
-print( tryReverseOp( N(1), N(2), '+' ) )
-
+print(N(12)+N(12))
 
