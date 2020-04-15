@@ -38,7 +38,8 @@ class Z( N ):
         return Q( self.digits, 1 )
 
     # Нет проверки на знак!
-    def __lt__( self, other ):
+    # Inherited from N::__lt__().
+    '''def __lt__( self, other ):
         if ( len( self ) < len( other ) ):
             return True
         elif ( len( self ) > len( other ) ):
@@ -50,7 +51,7 @@ class Z( N ):
                 elif self.digits[ i ] > other.digits[ i ]:
                     return False
             # Long check must be here...
-            return True
+            return True'''
 
     def __gt__( self, other ):
         if ( len( self ) > len( other ) ):
@@ -77,5 +78,5 @@ class Z( N ):
         return Z( int( out ) )
 
 
-#print( Z( 33 ) + Z( -108 ) )
 
+#print( N( 77345 ) - N( 1234124 ) ) # Must be "-1156779".
