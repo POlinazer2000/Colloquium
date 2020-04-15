@@ -35,20 +35,50 @@ class N:
         return Z( self.digits )
 
 
-    # "Less than", "<="
+    # "Less than", "<"
     def __lt__( self, other ):
         if ( len( self ) < len( other ) ):
             return True
         elif ( len( self ) > len( other ) or ( self.digits == [ 0 ] and other.digits == [ 0 ] ) ):
             return False
         else:
-            for i in range( len( self ), -1, -1 ):
+            for i in range( len( self )-1, -1, -1 ):
+                if self.digits[ i ] < other.digits[ i ]:
+                    return True
+                elif self.digits[ i ] > other.digits[ i ]:
+                    return False
+            return False
+    # "<="
+    def __le__(self, other):
+        if ( len( self ) < len( other ) or ( self.digits == [ 0 ] and other.digits == [ 0 ] ) ):
+            return True
+        elif ( len( self ) > len( other ) ):
+            return False
+        else:
+            for i in range( len( self )-1, -1, -1 ):
                 if self.digits[ i ] < other.digits[ i ]:
                     return True
                 elif self.digits[ i ] > other.digits[ i ]:
                     return False
             return True
-
+    # "=="
+    def __eq__(self, other):
+        if ( len(self) != len(other) ):
+            return False
+        else:
+            for i in range( len( self )-1, -1, -1 ):
+                if self.digits[ i ] != other.digits[ i ]:
+                    return False
+            return True
+    # "!="
+    def __ne__(self, other):
+        return not self == other
+    # ">"
+    def __gt__(self, other):
+        return not self <= other
+    # ">="
+    def __ge__(self, other):
+        return not self < other
 
     # Переопределение сложения.
     def __add__( self, other ):
@@ -80,31 +110,6 @@ class N:
 
         return N( int( str(''.join(map(str, out))) ) )
     
-    # Переопределение умножения.
-    '''def __mul__(self, other):
-        self.tryReverseOp(other, "*")
-        out=[]
-        if (int(str(other))>=0 and int(str(self))>=0):
-            for i in range(int(str(other))):
-                out += self
-            out = list(str(out))
-            return N(int(str(''.join(map(str, out)))))
-        else:
-            raise RuntimeError("Some of these digits is not N class")'''
-    
-    # Перегрузка "!="
-    def __ne__(self, other):
-        if((self.sign and other.sign) or (self.sign==False and other.sign==False)):
-            if ((abs(self)-abs(other))==0):
-                return False
-            else:
-                return True
-        else:
-            return True
-            
-    # Перегрузка "=="
-    def __eq__(self, other):
-        return not (self!=other)
 
     # Перегрузка "/"
     def __truediv__(self, other):
@@ -215,4 +220,4 @@ class N:
             n = i + n
         return n
 
-print( N(50)*N(122))
+print( N(12) < N(11))
