@@ -42,7 +42,7 @@ class N:
         elif ( len( self ) > len( other ) or ( self.digits == [ 0 ] and other.digits == [ 0 ] ) ):
             return False
         else:
-            for i in range( len( self )-1, -1, -1 ):
+            for i in range( len( self ) ):
                 if self.digits[ i ] < other.digits[ i ]:
                     return True
                 elif self.digits[ i ] > other.digits[ i ]:
@@ -55,7 +55,7 @@ class N:
         elif ( len( self ) > len( other ) ):
             return False
         else:
-            for i in range( len( self )-1, -1, -1 ):
+            for i in range( len( self ) ):
                 if self.digits[ i ] < other.digits[ i ]:
                     return True
                 elif self.digits[ i ] > other.digits[ i ]:
@@ -66,7 +66,7 @@ class N:
         if ( len(self) != len(other) ):
             return False
         else:
-            for i in range( len( self )-1, -1, -1 ):
+            for i in range( len( self ) ):
                 if self.digits[ i ] != other.digits[ i ]:
                     return False
             return True
@@ -168,7 +168,7 @@ class N:
             return newz
         else:
             return N(int(str(''.join(map(str, out)))))
-            '''if (out[i] < 0):
+    '''if (out[i] < 0):
                 #print( )
                 #out[ i ] += 10 - ( self.digits[ i ] - other.digits[ i ] )
                 if (i == 0):
@@ -220,4 +220,34 @@ class N:
             n = i + n
         return n
 
-print( N(12) < N(11))
+    def nzer(self):
+        if self.digits[0]==0:
+            return False
+        return True
+    # степень частного с первой цифрой
+    def divdk(self, other):
+        k = 0
+        while self >= other.mulk(k):
+            k += 1
+
+        k -= 1
+        res = 9
+
+        while self < other.muld(res).mulk(k):
+            res -= 1
+        return res * 10 ** k
+    #магия "/" здесь целая часть ( не уверен, что работает во всех случаях )
+    def __truediv__(self, other):
+        lst = []
+        lst += self.digits
+        tmp = N(lst)
+        n = N(0)
+
+        while tmp > other:
+            n = n + N( tmp.divdk(other) )
+            if tmp < N( tmp.divdk(other) ) * other:
+                break
+            tmp = tmp - N( tmp.divdk(other) ) * other
+        return n
+
+print( N(120) / N(12))
