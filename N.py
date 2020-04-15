@@ -249,9 +249,26 @@ class N:
                 break
             tmp = tmp - N( tmp.divdk(other) ) * other
         return n
+    # "%"
     def __mod__(self, other):
         n = self / other
         n = n * other
         n = self - n
         return n
+    # НОД, пока в виде метода
+    def gcd(self, other):
+        lst1 = []
+        lst2 = []
+        lst1 += self.digits
+        lst2 += other.digits
+        tmp1 = N(lst1)
+        tmp2 = N(lst2)
+        while tmp2 != N(0):
+            tmp1 = tmp1 % tmp2
+            tmp1, tmp2 = tmp2, tmp1
+        return tmp1
 print( N(120) % N(11))
+n1 = N(120)
+n2 = N(48)
+print( n1.gcd(n2))
+
