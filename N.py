@@ -249,5 +249,9 @@ class N:
                 break
             tmp = tmp - N( tmp.divdk(other) ) * other
         return n
-
-print( N(120) / N(12))
+    def __mod__(self, other):
+        n = self / other
+        n = n * other
+        n = self - n
+        return n
+print( N(120) % N(11))
