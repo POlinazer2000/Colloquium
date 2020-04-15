@@ -1,7 +1,8 @@
 #
 # [McM]: Не забыть перевести кодировку FAR'а в UTF-8!!!
 #
-
+class Z:
+    pass
 class N:
     # Инициализация класса.
     # Здесь: списку "N.digits" присваивается значение первого аргумента (тип: int).
@@ -51,9 +52,9 @@ class N:
 
     # Переопределение сложения.
     def __add__( self, other ):
-        out = self.tryReverseOp( other, "+" )
-        if ( str( out ) != "noRev" ):
-            return out
+        #out = self.tryReverseOp( other, "+" )
+        #if ( str( out ) != "noRev" ):
+        #     return out
 
         if isinstance(other, int):
             other = N( other )
@@ -189,3 +190,29 @@ class N:
         else:
             return Z(int(str(''.join(map(str, out)))))'''
 
+    def muld(self, d):
+        t = 0
+        lst = []
+        lst += self.digits
+        for i in range(1, len(self) + 1):
+            lst[-i] *= d
+            lst[-i] += t
+            t = lst[-i] // 10
+            lst[-i] %= 10
+        if t:
+            lst.insert(0, t)
+        return N(lst)
+
+    def mulk(self, k):
+        return N(self.digits+[0]*k)
+
+    def __mul__(self, other):
+        lst = []
+        for i in range(len(other)):
+            lst.append( self.muld(other.digits[-i-1]).mulk(i) )
+        n = N(0)
+        for i in lst:
+            n = i + n
+        return n
+
+print( N(50)*N(122))
