@@ -111,23 +111,6 @@ class N:
         return N( int( str(''.join(map(str, out))) ) )
     
 
-    # Перегрузка "/"
-    def __truediv__(self, other):
-        self.tryReverseOp(other, "/")
-        out=0
-        if (int(str(other)) >= 0 and int(str(self)) >= 0):
-            for i in range(int(str(other))):
-                out -= self.digits[ i ]
-                if (out < 0 and i != 0):
-                    out += self.digits[ i ]
-                    break
-                else:
-                    out = 0
-            out = list(str(out))
-            return N(int(str(''.join(map(str, out)))))
-        else:
-            raise RuntimeError("Some of these digits is not N class")
-
     # Перегрузка "//"
     def __floordiv__( self, other ):
         return self / other
@@ -168,32 +151,6 @@ class N:
             return newz
         else:
             return N(int(str(''.join(map(str, out)))))
-    '''if (out[i] < 0):
-                #print( )
-                #out[ i ] += 10 - ( self.digits[ i ] - other.digits[ i ] )
-                if (i == 0):
-                    #out = list( str( N( out ).toZ() )[ i ] for i in range( len( str ) ) )
-                    #out.toZ()
-                    #outZ = self.toZ()
-                    out[ i ] = -out[ i ]
-                    #mustBeZ = Zsign = True
-                else:
-                    for k in range (i-1,-1,-1):
-                        if (out[k]!=0):
-                            self.digits[k]-=1
-                            out[i]+=10
-                            #print( i, out[ i ])
-                            #if out[ i ] < 0:
-                            #    out[ i ] += 10
-                        if (k==0):
-                            mustBeZ = Zsign = True
-                            #out[ i ]
-                            #outZ = self.toZ()
-                            #outZ.sign=True
-        if (type(out)!=Z):
-            return N(int(str(''.join(map(str, out)))))
-        else:
-            return Z(int(str(''.join(map(str, out)))))'''
 
     def muld(self, d):
         t = 0
