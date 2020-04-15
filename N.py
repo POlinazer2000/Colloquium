@@ -267,8 +267,13 @@ class N:
             tmp1 = tmp1 % tmp2
             tmp1, tmp2 = tmp2, tmp1
         return tmp1
+    # НОК
+    def lcm(self,other):
+        res = self * other
+        res = res / self.gcd(other)
+        return res
 print( N(120) % N(11))
 n1 = N(120)
 n2 = N(48)
-print( n1.gcd(n2))
+print( n1.lcm(n2))
 
