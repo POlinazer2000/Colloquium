@@ -1,8 +1,9 @@
 #
 # [McM]: Не забыть перевести кодировку FAR'а в UTF-8!!!
 #
-class Z:
-    pass
+from main import *
+from Z import *
+from Q import *
 class N:
     # Инициализация класса.
     # Здесь: списку "N.digits" присваивается значение первого аргумента (тип: int).
@@ -24,12 +25,6 @@ class N:
         return len( self.digits )
 
     # Проверка на возможность перевести запрос на более высокий уровень.
-    def tryReverseOp( self, other, operator ):
-        if ( isinstance( other, Z ) ):
-            return eval( str( self.toZ() ) + operator + str( other ) )
-        #if ( isinstance( other, Q ) ):
-        #    return eval( str( self.toZ().toQ() ) + operator + str( other ) )
-        return "NoRev"
 
     def toZ( self ):
         return Z( self.digits )
@@ -37,6 +32,8 @@ class N:
 
     # "Less than", "<"
     def __lt__( self, other ):
+        if type(self) != type(other):
+            return tryReverseOp(self, other, '<')
         if ( len( self ) < len( other ) ):
             return True
         elif ( len( self ) > len( other ) or ( self.digits == [ 0 ] and other.digits == [ 0 ] ) ):
@@ -50,6 +47,8 @@ class N:
             return False
     # "<="
     def __le__(self, other):
+        if type(self) != type(other):
+            return tryReverseOp(self, other, '<=')
         if ( len( self ) < len( other ) or ( self.digits == [ 0 ] and other.digits == [ 0 ] ) ):
             return True
         elif ( len( self ) > len( other ) ):
@@ -63,6 +62,8 @@ class N:
             return True
     # "=="
     def __eq__(self, other):
+        if type(self) != type(other):
+            return tryReverseOp(self, other, '==')
         if ( len(self) != len(other) ):
             return False
         else:
@@ -82,14 +83,8 @@ class N:
 
     # Переопределение сложения.
     def __add__( self, other ):
-        #out = self.tryReverseOp( other, "+" )
-        #if ( str( out ) != "noRev" ):
-        #     return out
-
-        if isinstance(other, int):
-            other = N( other )
-        elif not isinstance(other, N):
-            raise RuntimeError( "Digit cannot be presented as integer > 0." )
+        if type(self) != type(other):
+            return tryReverseOp(self, other, '+')
 
         while ( len( self ) < len( other ) ):
             self.digits.insert( 0, 0 )
@@ -109,16 +104,12 @@ class N:
                 out[ i ] %= 10
 
         return N( int( str(''.join(map(str, out))) ) )
-    
 
-    # Перегрузка "//"
-    def __floordiv__( self, other ):
-        return self / other
 
     # Перегрузка "-"
     def __sub__(self, other):
-        self.tryReverseOp(other, "-")
-    
+        if type(self) != type(other):
+            return tryReverseOp(self, other, '-')
         signMustExist = False
         
         if ( self < other ):
@@ -167,8 +158,10 @@ class N:
 
     def mulk(self, k):
         return N(self.digits+[0]*k)
-
+    # "*"
     def __mul__(self, other):
+        if type(self) != type(other):
+            return tryReverseOp(self, other, '*')
         lst = []
         for i in range(len(other)):
             lst.append( self.muld(other.digits[-i-1]).mulk(i) )
@@ -193,8 +186,10 @@ class N:
         while self < other.muld(res).mulk(k):
             res -= 1
         return res * 10 ** k
-    #магия "/" здесь целая часть ( не уверен, что работает во всех случаях )
-    def __truediv__(self, other):
+    #магия "//" здесь целая часть ( не уверен, что работает во всех случаях )
+    def __floordiv__(self, other):
+        if type(self) != type(other):
+            return tryReverseOp(self, other, '//')
         lst = []
         lst += self.digits
         tmp = N(lst)
@@ -206,20 +201,35 @@ class N:
                 break
             tmp = tmp - N( tmp.divdk(other) ) * other
         return n
+
     # "%"
     def __mod__(self, other):
-        n = self / other
+        if type(self) != type(other):
+            return tryReverseOp(self, other, '%')
+        n = self // other
         n = n * other
         n = self - n
         return n
+
+    # Перегрузка "/"
+    def __truediv__(self, other):
+        if type(self) != type(other):
+            return tryReverseOp(self, other, '//')
+        if (self % other == 0):
+            return self // other
+        else:
+            return Q(self, other)
     # НОД, пока в виде метода
     def gcd(self, other):
+        #в этом варианте self не будет изменен
         lst1 = []
         lst2 = []
         lst1 += self.digits
         lst2 += other.digits
         tmp1 = N(lst1)
         tmp2 = N(lst2)
+        '''tmp1 = self
+        tmp2 = other'''
         while tmp2 != N(0):
             tmp1 = tmp1 % tmp2
             tmp1, tmp2 = tmp2, tmp1
@@ -229,8 +239,7 @@ class N:
         res = self * other
         res = res / self.gcd(other)
         return res
-print( N(120) % N(11))
-n1 = N(120)
-n2 = N(48)
-print( n1.lcm(n2))
+
+
+
 
