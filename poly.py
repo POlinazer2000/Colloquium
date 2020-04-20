@@ -38,6 +38,72 @@ class poly():
         
         return out
 
+    def __add__(self, other):
+        if len(self.coef)<len(other.coef):
+            self, other = other, self
+        out=poly(str(self))
+        do=len(other.coef)
+        ds=len(self.coef)
+        for i in range(do):
+            out.coef[ds-do+i] += other.coef[i]
+        while(out.coef[0]==0):
+            out.coef.pop(0)
+        return poly(str(out))
+
+
+    def __sub__(self, other):
+        if len(self.coef) < len(other.coef):
+            self, other = other, self
+        out = poly(str(self))
+        do = len(other.coef)
+        ds = len(self.coef)
+        for i in range(do):
+            out.coef[ds - do + i] -= other.coef[i]
+        while (out.coef[0] == 0):
+            out.coef.pop(0)
+        return poly(str(out))
+
+
+    def __mul__(self, other):
+        if len(self.coef) < len(other.coef):
+            self, other = other, self
+        out=poly(str([0]*(len(self.coef)+len(other.coef)-2)))
+        for i in range(len(self.coef)):
+            for j in range(len(other.coef)):
+                out.coef[i+j]+= self.coef[i] * other.coef[j]
+        return poly(str(out))
+
+
+    def __floordiv__(self, other):
+        outq=poly(str([0]*(len(self.coef)-len(other.coef))))
+        outr=poly(str(self.coef))
+        i=0
+        while outr >= other:
+            outq.coef[i]=outr.coef[0]
+            outr-=other*outq
+            i+=1
+        return poly(str(outq))
+
+
+    def __mod__(self, other):
+        outq=poly(str([0]*(len(self.coef)-len(other.coef))))
+        outr=poly(str(self.coef))
+        i=0
+        while outr >= other:
+            outq.coef[i]=outr.coef[0]
+            outr-=other*outq
+            i+=1
+        return poly(str(outr))
+
+    def factor_P(self):
+        a=poly(str(self))
+        g=abs(a.coef[0].num).GCF(abs(a.coef[0].num))
+        l=a.coef[0].denum.LCM(a.coef[0].denum)
+        for i in range(1, len(a.coef)):
+            g=gcd.GCF(abs(a.coef[0].num))
+            l=lcm.LCM(a.coef[i].denum)
+        return Q(str(g), str(l))
+
     # НОД многочлена.
     def GCF_PP_P(poly1,poly2):
         c=poly1%poly2
