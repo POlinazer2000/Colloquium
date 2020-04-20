@@ -1,82 +1,130 @@
-#
-# [McM]: Не забыть перевести кодировку FAR'а в UTF-8!!!
-#
-
-
-class Z( N ):
+class Z():
     # Инициализация класса.
     # Здесь: списку "Z.digits" присваивается значение первого аргумента (тип: int).
-    #Пример: "Z( -1234 )" создаст объект класса "Z()" с "digits = [1, 2, 3, 4]" и "sign = True".
+    # Пример: "Z( -1234 )" создаст объект класса "Z()" с "digits = [1, 2, 3, 4]" и "sign = True".
     def __init__(self, digit):
         try:
-            digit = str(int(str(digit).replace('[', '').replace(']', '').replace(' ', '').replace(',', '')))
+            digit = str(
+                int(str(digit).replace('[', '').replace(']', '').replace(' ', '').replace(',', '').replace('\'', "")))
             self.sign = False
             if (digit[0] == '-'):
                 self.sign = True
                 digit = digit[1:]
             self.digits = [int(i) for i in digit]
+            if self.sign and self.digits[0] == 0:
+                self.sign = False
         except:
+            print(digit)
             raise RuntimeError("Digit cannot be presented as integer.")
 
     # Что возвращается при вызове через "print()", "format()" и им подобное.
     def __str__(self):
         out = self.sign and '-' or ""
-        out += str(''.join( map( str, self.digits )))
+        out += str(''.join(map(str, self.digits)))
         return out
 
     # "len( Z() )", наследованный от N()::__len__() возвращает количество цифр в числе, знак не учитывается.
+    def __len__(self):
+        return len(self.digits)
 
-    def __abs__( self ):
-        return Z( list( map( abs, self.digits ) ) )
+    def __abs__(self):
+        return Z(self.digits)
 
-    def toN( self ):
-        if ( self < Z( 0 ) ):
-            raise RuntimeError( "Z", str( self ), "cannot be presented as N." )
-        return N( int( str( self ) ) )
+    def toN(self):
+        if (self.sign):
+            raise RuntimeError("Z", str(self), "cannot be presented as N.")
+        return N(str(self))
 
-    def toQ( self ):
-        return Q( self.digits, 1 )
+    def toQ(self):
+        return Q(self)
 
-    # Нет проверки на знак!
-    # Inherited from N::__lt__().
-    '''def __lt__( self, other ):
-        if ( len( self ) < len( other ) ):
-            return True
-        elif ( len( self ) > len( other ) ):
+    def toPoly(self):
+        return poly(self)
+
+    def __gt__(self, other):
+        if type(self) != type(other):
+            return tryReverseOp(self, other, '>')
+        if self.sign and other.sign:
+            return abs(self).toN() < abs(other).toN()
+        elif not (self.sign or other.sign):
+            return abs(self).toN() > abs(other).toN()
+        elif self.sign:
             return False
         else:
-            for i in range( len( self ), 0, -1 ):
-                if self.digits[ i ] < other.digits[ i ]:
-                    return True
-                elif self.digits[ i ] > other.digits[ i ]:
-                    return False
-            # Long check must be here...
-            return True'''
-
-    def __gt__( self, other ):
-        if ( len( self ) > len( other ) ):
             return True
-        elif ( len( self ) < len( other ) ):
+
+    def __lt__(self, other):
+        if type(self) != type(other):
+            return tryReverseOp(self, other, '<')
+        if self.sign and other.sign:
+            return abs(self).toN() > abs(other).toN()
+        elif not (self.sign or other.sign):
+            return abs(self).toN() < abs(other).toN()
+        elif self.sign:
+            return True
+        else:
             return False
+
+    def __le__(self, other):
+        return not (self > other)
+
+    def __ge__(self, other):
+        return not (self < other)
+
+    def __eq__(self, other):
+        if type(self) != type(other):
+            return tryReverseOp(self, other, '==')
+        if self.sign and other.sign:
+            return abs(self).toN() == abs(other).toN()
         else:
-            # Long check must be here...
-            return True
+            return False
 
-    def __le__( self, other ):
-        return not ( self > other )
-    
-    def __ge__( self, other ):
-        return not ( self < other )
+    def __ne__(self, other):
+        return not self == other
 
-    def __add__( self, other ):
-        if ( abs( self ) > abs( other ) ):
-            out = "-" if self < Z( 0 ) else ""
-            out += str( N( int(str(abs(self))) ) ) + N( int(str(abs(other))) )
+    def __add__(self, other):
+        if type(self) != type(other):
+            return tryReverseOp(self, other, "+")
+        if self.sign and other.sign:
+            return Z('-'+str(abs(self).toN()+abs(other).toN()))
+        if not (self.sign or other.sign):
+            return Z(self.toN()+other.toN())
+        elif self.sign:
+            return Z(other.toN() - abs(self).toN())
         else:
-            out = "-" if other < Z( 0 ) else ""
-            out += str( abs( other ).toN() + abs( self ).toN() )
-        return Z( int( out ) )
+            return Z(self.toN() - abs(other).toN())
 
 
 
-#print( N( 77345 ) - N( 1234124 ) ) # Must be "-1156779".
+
+    def __mul__(self, other):
+        if type(self) != type(other):
+            return tryReverseOp(self, other, "*")
+        return Z(("-" if self.sign ^ other.sign else "") + str(abs(self).toN() * abs(other).toN()))
+
+    def __floordiv__(self, other):
+        if type(self) != type(other):
+            return tryReverseOp(self, other, "//")
+        res = abs(self).toN() // abs(other).toN()
+        if self.sign:
+            res = res + N(1)
+        return Z(("-" if self.sign ^ other.sign else "") + str(res))
+
+    def __truediv__(self, other):
+        if type(self) != type(other):
+            return tryReverseOp(self, other, "/")
+        if (self % other == Z(0)):
+            return self // other
+        else:
+            return Q(self, other)
+
+    def __mod__(self, other):
+        if type(self) != type(other):
+            return tryReverseOp(self, other, "%")
+        return self - self // other * other
+
+    def __sub__(self, other):
+        if type(self) != type(other):
+            tryReverseOp(self, other, "-")
+        other = other * Z(-1)
+        return self + other
