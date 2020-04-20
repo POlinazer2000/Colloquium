@@ -18,7 +18,7 @@ N():
 	list digits[] (int);
 
 * N1	comp_N_N	overload <, >, ==, >=, <=, !=
-* Михаил и Никита (+-)
+* Михаил, Никита (+-)
 * N2	!zer_N		overload !=, ==
 * Михаил (отдельная перегрузка не нужна)
 * N3	inc_N		overload +
@@ -78,46 +78,46 @@ Q():
 	N denum;
 
 * Q1	reduce_Q	Q = Q.reduce()
-* Максим
+* Максим (+)
 * Q2	isint_Q		bool = Q.isInt()
-* Максим
+* Максим (+)
 * Q3	trans_Z_Q	Q = Z.toQ()
-* Максим
+* Максим (+)
 * Q4	trans_Q_Z	Z = Q.toZ()
-* Максим
+* Максим (+)
 * Q5	add_Q_Q		overload +, use Z::(+)
-* Максим
+* Максим (+)
 * Q6	sub_Q_Q		overload -, use Z::(-)
-* Максим
+* Максим (+)
 * Q7	mul_Q_Q		overload \*, use Z::(\*)
-* Максим
+* Максим (+)
 * Q8	div_Q_Q		overload /, use Z::(\*)
-* Максим
+* Максим (+)
 
 
 P():
 	list coef[] (Q);
 
 * P1	add_P_P		overload +
-* --
+* Илья В. (+?)
 * P2	sub_P_P		overload -
-* --
+* Илья В. (+?)
 * P3	mul_P_Q		overload \*
-* --
+* Илья В. (+?)
 * P4	mul_P_x^k	overload \*
-* --
+* Илья В. (+?)
 * P5	leadcoef_P	Q = P.leadcoef()
 * --
 * P6	deg_P		N = P.deg()
 * --
 * P7	factor_P	?
-* Илья
+* Илья В. (+?)
 * P8	mul_P_P		overload \*
-* Илья
+* Илья В. (+?)
 * P9	div_P_P		overload //
-* Илья
+* Илья В. (+?)
 * P10	mod_P_P		overload %
-* Полина (+-)
+* Полина, Илья В. (+-)
 * P11	GCF_P		? = GCF( P1, P2, ... )
 * Никита (+?)
 * P12	dervtive_P	P = P.derivative()
