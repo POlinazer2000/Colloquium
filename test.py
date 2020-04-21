@@ -275,6 +275,9 @@ class N:
         res = res / self.gcd(other)
         return res
 
+    def __neg__(self):
+        return Z(-1)*self
+
 
 class Z():
     # Инициализация класса.
@@ -408,6 +411,9 @@ class Z():
         other = other * Z(-1)
         return self + other
 
+    def __neg__(self):
+        return Z(-1)*self
+
 
 class Q():
     def __init__(self, num, denum=N(1)):
@@ -536,6 +542,9 @@ class Q():
 
     def __ge__(self, other):
         return not self < other
+
+    def __neg__(self):
+        return Z(-1)*self
 
 
 class poly():
