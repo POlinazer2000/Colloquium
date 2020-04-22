@@ -74,7 +74,7 @@ class Z():
     def __eq__(self, other):
         if type(self) != type(other):
             return tryReverseOp(self, other, '==')
-        if self.sign and other.sign:
+        if self.sign == other.sign:
             return abs(self).toN() == abs(other).toN()
         else:
             return False
@@ -106,7 +106,8 @@ class Z():
         if type(self) != type(other):
             return tryReverseOp(self, other, "//")
         res = abs(self).toN() // abs(other).toN()
-        if self.sign:
+        m = abs(self).toN()%abs(other).toN()
+        if self.sign and m != N(0):
             res = res + N(1)
         return Z(("-" if self.sign ^ other.sign else "") + str(res))
 

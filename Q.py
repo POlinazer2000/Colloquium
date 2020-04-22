@@ -1,6 +1,7 @@
 from main import *
 from N import *
 from Z import *
+
 class Q():
     def __init__(self, num, denum=N(1)):
         if isinstance(num, N):
@@ -12,7 +13,7 @@ class Q():
 
         if isinstance(denum, Z):
             if denum.sign:
-                self.num = self * Z(-1)
+                self.num = self.num * Z(-1)
             self.denum = abs(denum).toN()
         elif isinstance(denum, N):
             self.denum = denum
@@ -87,7 +88,7 @@ class Q():
         if type(self) != type(other):
             return tryReverseOp(self, other, '*')
         num = self.num * other.num
-        denum = self.denum * self.denum
+        denum = self.denum * other.denum
         return Q(num, denum).red()
 
     def __truediv__(self, other):
@@ -109,7 +110,8 @@ class Q():
     def __mod__(self, other):
         if type(self) != type(other):
             return tryReverseOp(self, other, '%')
-        mod = self - (self // other) * other
+        tmp = self / other
+        mod = tmp.num % tmp.denum
         return mod
 
     def __lt__(self, other):
