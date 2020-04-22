@@ -137,3 +137,6 @@ class Q():
 
     def __ge__(self, other):
         return not self < other
+
+    def __neg__(self):
+        return Z(-1)*self

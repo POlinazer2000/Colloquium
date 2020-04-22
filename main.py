@@ -6,12 +6,25 @@ from poly import *
 #
 # [McM]: Не забыть перевести кодировку FAR'а в UTF-8!!!
 #
+import re
+def parse(s):
+    def forN(s):
+        return 'N(' + s[0] + ')'
 
-def parse(str):
-    tmp = str.replace(' ','')
-    ops = ['/','//','*','+','-','%']
-    tmp = tmp.split(ops)
-    return tmp
+    def forx(s):
+        return 'poly(1:' + s[0][:-1] + ')'
+
+    def fordx(s):
+        return 'poly({}:{})'.format(s[3], s[1])
+
+    patforn = '(?:(?<!x\^)(?<!\d))\d+(?![xX0-9])'  # поиск всех не-коэффициентов х
+    patforx = '(?<![x0-9])\d+x(?=[^\^0-9x])'  # для х без степени
+    patfordx = '(?<![x0-9])(\d+)(x\^)(\d+)'  # для х со степенью
+
+    s = re.sub(patforn, forN, s)
+    s = re.sub(patforx, forx, s)
+    s = re.sub(patfordx, fordx, s)
+    return s
 
 def tryReverseOp(a, b, op):
     crutch = {type(N(0)): 1,

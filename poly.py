@@ -55,9 +55,6 @@ class poly():
                     out+='x^{}'.format(i)
                 elif i == 1:
                     out += 'x'
-                else:
-                    if coef[i]==Q(1):
-                        out+=str(coef[i])
             if out[0]=='+':
                 out = out[1:]
         return out
@@ -199,3 +196,6 @@ class poly():
         gcd = self.gcd(der)
         res = self / gcd
         return res
+
+    def __neg__(self):
+        return Z(-1)*self

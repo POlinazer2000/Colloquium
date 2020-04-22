@@ -252,3 +252,6 @@ class N:
         res = self * other
         res = res / self.gcd(other)
         return res
+
+    def __neg__(self):
+        return Z(-1)*self

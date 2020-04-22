@@ -129,3 +129,6 @@ class Z():
             tryReverseOp(self, other, "-")
         other = other * Z(-1)
         return self + other
+
+    def __neg__(self):
+        return Z(-1)*self

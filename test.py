@@ -1,3 +1,24 @@
+import re
+def parse(s):
+    def forN(s):
+        return 'N(' + s[0] + ')'
+
+    def forx(s):
+        return 'poly(1:' + s[0][:-1] + ')'
+
+    def fordx(s):
+        return 'poly({}:{})'.format(s[3], s[1])
+
+    patforn = '(?:(?<!x\^)(?<!\d))\d+(?![xX0-9])'  # поиск всех не-коэффициентов х
+    patforx = '(?<![x0-9])\d+x(?=[^\^0-9x])'  # для х без степени
+    patfordx = '(?<![x0-9])(\d+)(x\^)(\d+)'  # для х со степенью
+
+    s = re.sub(patforn, forN, s)
+    s = re.sub(patforx, forx, s)
+    s = re.sub(patfordx, fordx, s)
+    return s
+
+
 def tryReverseOp(a, b, op):
     crutch = {type(N(0)): 1,
               type(Z(0)): 2,
@@ -593,21 +614,19 @@ class poly():
 
             for i in key:
                 if coef[i].num.sign == False:
-                    out+='+'
-                if coef[i] == Q(1):
+                    out += '+'
+                if coef[i] == Q(1) and i != 0:
                     pass
-                elif coef[i] == Q(-1):
-                    out+='-'
+                elif coef[i] == Q(-1) and i != 0:
+                    out += '-'
                 else:
-                    out+= str(coef[i])
+                    out += str(coef[i])
                 if i > 1:
-                    out+='x^{}'.format(i)
+                    out += 'x^{}'.format(i)
                 elif i == 1:
                     out += 'x'
-                else:
-                    if coef[i]==Q(1):
-                        out+=str(coef[i])
-            if out[0]=='+':
+
+            if out[0] == '+':
                 out = out[1:]
         return out
 
@@ -749,6 +768,8 @@ class poly():
         res = self / gcd
         return res
 
+    def __neg__(self):
+        return Z(-1)*self
 
 # print( poly({  -4: Q( 5, 4 )  }) + poly({  -4: Q( 7, 17 ), 17: Q( -3 )  }) )
 print(poly('1 2 2'))
@@ -756,3 +777,11 @@ print(poly('2 2')/poly('1 1'))
 print(poly('1 2 1').gcd(poly('2 2')))
 print(poly('1 -20 175 -878 2779 -5744 7737 -6534 3132 -648').nmr())
 print(poly({100:1})/poly({100:1}))
+print(poly('-1'))
+print(eval('N(5) * N(9) / N(4) + N(3)'))
+s1 = '5 * 9 / 4 +3'
+
+
+print(eval(parse(s1)))
+
+
