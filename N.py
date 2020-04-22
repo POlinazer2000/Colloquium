@@ -206,7 +206,7 @@ class N:
         tmp = N(lst)
         n = N(0)
 
-        while tmp > other:
+        while tmp >= other:
             n = n + N(tmp.divdk(other))
             if tmp < N(tmp.divdk(other)) * other:
                 break
