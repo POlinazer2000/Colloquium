@@ -771,17 +771,16 @@ class poly():
     def __neg__(self):
         return Z(-1)*self
 
-# print( poly({  -4: Q( 5, 4 )  }) + poly({  -4: Q( 7, 17 ), 17: Q( -3 )  }) )
+print( poly({  -4: Q( 5, 4 )  }) + poly({  -4: Q( 7, 17 ), 17: Q( -3 )  }) )
 print(poly('1 2 2'))
 print(poly('2 2')/poly('1 1'))
 print(poly('1 2 1').gcd(poly('2 2')))
-print(poly('1 -20 175 -878 2779 -5744 7737 -6534 3132 -648').nmr())
 print(poly({100:1})/poly({100:1}))
 print(poly('-1'))
 print(eval('N(5) * N(9) / N(4) + N(3)'))
-s1 = '5 * 9 / 4 +3'
+#print(poly('1 -20 175 -878 2779 -5744 7737 -6534 3132 -648').nmr())
 
-
-print(eval(parse(s1)))
+#s1 = '5 * 9 / 4 +3'
+#print(eval(parse(s1)))
 
 
