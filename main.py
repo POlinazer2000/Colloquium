@@ -56,8 +56,7 @@ class N:
     def __len__(self):
         return len(self.digits)
 
-    # Проверка на возможность перевести запрос на более высокий уровень.
-
+    # Перенос текущего числа класса N() в классы Z(), Q() и poly() соответственно.
     def toZ(self):
         return Z(self.digits)
 
