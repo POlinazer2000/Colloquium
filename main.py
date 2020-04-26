@@ -1,5 +1,6 @@
-import re
-def parse(s):
+import re # Регулярные выражения, для парсера строки.
+
+def parse(s): 
     def forN(s):
         return 'N(' + s[0] + ')'
 
@@ -25,25 +26,15 @@ def tryReverseOp(a, b, op):
               type(Q(0)): 3,
               type(poly(0)): 4
               }
-
-    # print( type( a ), type( b ) )
-    # print( type(N(0)), type(Z(0)), type(Q(0)), type(poly(0)) )
-    # print( a, op, b, ": ", type( a ), type( b ) )
-    # print( self, "__add__", other, ": ", type( self ), type( other ) )
-    try:
+    try: # Пытаемся сравнить типы по "старшенству".
         if crutch[type(a)] < crutch[type(b)]:
-            return eval('type(b)(a)' + op + 'b')
+            return eval('type(b)(a)' + op + 'b') # Если "a" -- "младше", то приводим "a" к типу "b".
         else:
-            # print( str( a ) + op + str( eval( "type(a)(b)" ) ) )
-            return eval("a" + op + 'type(a)(b)')
+            return eval("a" + op + 'type(a)(b)') # Если "b" -- "младше", то приводим "b" к типу "a".
     except:
         print(a, op, b, ": ", type(a), type(b))
-        raise RuntimeError
+        raise RuntimeError # Если ошибка при сравнении всё-таки произошла, то сообщаем об этом, вызывая исключение.
 
-
-#
-# [McM]: Не забыть перевести кодировку FAR'а в UTF-8!!!
-#
 
 class N:
     # Инициализация класса.
@@ -78,13 +69,13 @@ class N:
 
     # "Less than", "<"
     def __lt__(self, other):
-        if type(self) != type(other):
+        if type(self) != type(other): # Отправляем в обменную централь, если типы разнятся.
             return tryReverseOp(self, other, '<')
         if (len(self) < len(other)):
             return True
         elif (len(self) > len(other) or (self.digits == [0] and other.digits == [0])):
             return False
-        else:
+        else: # Последовательное сравнение всех цифр, если длины оказались одинаковыми.
             for i in range(len(self)):
                 if self.digits[i] < other.digits[i]:
                     return True
@@ -92,7 +83,7 @@ class N:
                     return False
             return False
 
-    # "<="
+    # "Less or equal", "<=" (комментарии те же, что в "<")
     def __le__(self, other):
         if type(self) != type(other):
             return tryReverseOp(self, other, '<=')
@@ -108,7 +99,7 @@ class N:
                     return False
             return True
 
-    # "=="
+    # "==", то же.
     def __eq__(self, other):
         if type(self) != type(other):
             return tryReverseOp(self, other, '==')
@@ -120,34 +111,35 @@ class N:
                     return False
             return True
 
-    # "!="
+    # "!=", как "не 'равно'".
     def __ne__(self, other):
         return not self == other
 
-    # ">"
+    # ">", то же.
     def __gt__(self, other):
         return not self <= other
 
-    # ">="
+    # ">=", то же.
     def __ge__(self, other):
         return not self < other
 
     # Переопределение сложения.
     def __add__(self, other):
-        if type(self) != type(other):
+        if type(self) != type(other): # Отправляем в обменную централь, если типы разнятся.
             return tryReverseOp(self, other, '+')
 
+        # Дополняем списки цифр до одинаковой длины.
         while (len(self) < len(other)):
             self.digits.insert(0, 0)
         while (len(self) > len(other)):
             other.digits.insert(0, 0)
 
+        # Забиваем массив "out" нулями по обновлённой длине "self".
         out = [0] * len(self)
-        # print( self.digits, "+", other.digits, "; ", out, '\n' ) # 4debug.
 
-        for i in range(len(self) - 1, -1, -1):
+        for i in range(len(self) - 1, -1, -1): # Складываем все цифры, начиная с младшей.
             out[i] += self.digits[i] + other.digits[i]
-            if (out[i] > 9):
+            if (out[i] > 9): # Если сумма текущей позиции больше девяти, то переносим единицу в следующий разряд.
                 if (i == 0):
                     out.insert(0, out[i] // 10)
                     out[i+1] %= 10
@@ -159,39 +151,39 @@ class N:
 
     # Перегрузка "-"
     def __sub__(self, other):
-        if type(self) != type(other):
+        if type(self) != type(other): # Отправляем в обменную централь, если типы разнятся.
             return tryReverseOp(self, other, '-')
         signMustExist = False
 
-        if (self < other):
+        if (self < other): # Говорим, что знак в результате будет, если левое число меньше правого.
             self, other = other, self
             signMustExist = True
 
+        # Дополняем до одинакового количества.
         while (len(self) < len(other)):
             self.digits.insert(0, 0)
         while (len(self) > len(other)):
             other.digits.insert(0, 0)
 
+        # Забиваем массив "out" нулями по обновлённой длине "self".
         out = [0] * (len(self) + 1)
-        # print( self.digits, "-", other.digits, "; ", out, '\n' ) # 4debug.
 
-        for i in range(len(self), 0, -1):
+        for i in range(len(self), 0, -1): # Вычитаем, начиная с последней цифры.
             if (self.digits[i - 1] - other.digits[i - 1] < 0 and i != 1):
                 self.digits[i - 2] -= 1
                 self.digits[i - 1] += 10
             out[i] += self.digits[i - 1] - other.digits[i - 1]
-            # print( str( self.digits ), "-", str( other.digits ), "=", str( out ), ": (", out[ i ], "=", self.digits[i-1], "-", other.digits[i-1], ")" )
 
         while (out and out[0] == 0):
-            out.pop(0)
+            out.pop(0) # Убираем нули, если они вдруг появились.
 
-        if (not out):
+        if (not out): # Если всё -- нули, то возвращаем "0".
             return N(0)
-        elif (signMustExist):
+        elif (signMustExist): # Если должен быть знак, то возвращаем Z( out ).
             newz = Z(out)
             newz.sign = True
             return newz
-        else:
+        else: # Остальные случаи.
             return N(''.join(map(str, out)))
 
     def muld(self, d):
@@ -208,11 +200,11 @@ class N:
         return N(lst)
 
     def mulk(self, k):
-        return N(self.digits + [0] * k)
+        return N(self.digits + [0] * k) # Изящное умножение в реалиях коллоквиума...
 
     # "*"
     def __mul__(self, other):
-        if type(self) != type(other):
+        if type(self) != type(other): # Отправляем в обменную централь, если типы разнятся.
             return tryReverseOp(self, other, '*')
         lst = []
         for i in range(len(other)):
@@ -242,7 +234,7 @@ class N:
 
     # магия "//" здесь целая часть ( не уверен, что работает во всех случаях )
     def __floordiv__(self, other):
-        if type(self) != type(other):
+        if type(self) != type(other): # Отправляем в обменную централь, если типы разнятся.
             return tryReverseOp(self, other, '//')
         lst = []
         lst += self.digits
@@ -258,7 +250,7 @@ class N:
 
     # "%"
     def __mod__(self, other):
-        if type(self) != type(other):
+        if type(self) != type(other): # Отправляем в обменную централь, если типы разнятся.
             return tryReverseOp(self, other, '%')
         n = self // other
         n = n * other
@@ -266,8 +258,8 @@ class N:
         return n
 
     # Перегрузка "/"
-    def __truediv__(self, other):
-        if type(self) != type(other):
+    def __truediv__(self, other): # Обёртка для "//" -- по-идее, просто передача управления туда.
+        if type(self) != type(other): # Отправляем в обменную централь, если типы разнятся.
             return tryReverseOp(self, other, '//')
         if (self % other == N(0)):
             return self // other
@@ -283,15 +275,13 @@ class N:
         lst2 += other.digits
         tmp1 = N(lst1)
         tmp2 = N(lst2)
-        '''tmp1 = self
-        tmp2 = other'''
-        while tmp2 != N(0):
+        while tmp2 != N(0): # Стандартный алгоритм нахождения НОД.
             tmp1 = tmp1 % tmp2
             tmp1, tmp2 = tmp2, tmp1
         return tmp1
 
     # НОК
-    def lcm(self, other):
+    def lcm(self, other): # НОК( a, b ) == ( a * b )/НОД( a, b ).
         res = self * other
         res = res / self.gcd(other)
         return res
